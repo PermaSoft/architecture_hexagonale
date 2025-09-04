@@ -4,10 +4,10 @@ import io.permasoft.archihexa.pretdebd.domain.Bd;
 import io.permasoft.archihexa.pretdebd.domain.Bds;
 import io.permasoft.archihexa.pretdebd.domain.Isbn;
 import io.permasoft.archihexa.pretdebd.domain.Proprietaire;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +23,7 @@ public class BdServiceTest {
         }
 
         @Override
-        public Bd load(UUID id) {
+        public Optional<Bd> load(UUID id) {
             return bds.byId(id);
         }
     };
@@ -38,10 +38,11 @@ public class BdServiceTest {
         BdService bdService = new BdService(repo);
         bdService.enregistrer(id, isbn, proprietaire);
         //THEN
-        Bd bd = bdService.byId(id);
-        assertThat(new Bd(isbn, proprietaire, Bd.State.DISPONIBLE))
+        Bd bd = bdService.byId(id)
+                .orElseThrow(() -> new AssertionError("bd not found"));
+
+        assertThat(new Bd(id, isbn, proprietaire, Bd.State.DISPONIBLE))
                 .usingRecursiveComparison()
                 .isEqualTo(bd);
-
     }
 }

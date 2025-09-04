@@ -4,17 +4,21 @@ import io.permasoft.archihexa.pretdebd.domain.Bd;
 import io.permasoft.archihexa.pretdebd.domain.Isbn;
 import io.permasoft.archihexa.pretdebd.domain.Proprietaire;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class BdService {
+    private final Repository repo;
+
     public BdService(Repository repo) {
+        this.repo = repo;
     }
 
     public void enregistrer(UUID id, Isbn isbn, Proprietaire proprietaire) {
-
+        repo.save(new Bd(id, isbn, proprietaire, Bd.State.DISPONIBLE));
     }
 
-    public Bd byId(UUID id) {
-        return null;
+    public Optional<Bd> byId(UUID id) {
+        return repo.load(id);
     }
 }
