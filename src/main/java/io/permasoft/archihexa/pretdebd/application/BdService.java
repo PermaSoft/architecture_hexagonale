@@ -15,7 +15,7 @@ public class BdService {
     }
 
     public void enregistrer(UUID id, Isbn isbn, Proprietaire proprietaire) {
-        repo.save(new Bd(id, isbn, proprietaire, Bd.State.DISPONIBLE));
+        repo.save(new Bd(id, isbn, proprietaire));
     }
 
     public Optional<Bd> byId(UUID id) {
