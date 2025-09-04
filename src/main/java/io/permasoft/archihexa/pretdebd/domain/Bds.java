@@ -20,7 +20,7 @@ public class Bds {
 
     public Optional<Bd> byId(UUID id) {
         return initialBds.stream()
-                .filter(bd -> bd.id().equals(id))
+                .filter(bd -> bd.getId().equals(id))
                 .findFirst();
     }
 }

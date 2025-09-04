@@ -1,17 +1,22 @@
 package io.permasoft.archihexa.pretdebd.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.UUID;
 
-/**
- * records are exposed data structures without encapsulation and shows state here that is noise from a caller point of view.
- */
-public record Bd (UUID id, Isbn isbn, Proprietaire proprietaire, State disponible) {
+@EqualsAndHashCode(of = "id")
+@ToString
+@Getter
+public class Bd  {
+    private final UUID id;
+    private final Isbn isbn;
+    private final Proprietaire proprietaire;
+    private final State state;
+
     public enum State { DISPONIBLE, EMPRUNTE;}
 
-    /**
-     * Auxiliary constructor to create a Bd with default state DISPONIBLE.
-     * When loading a new bd from user.
-     */
     public Bd(UUID id, Isbn isbn, Proprietaire proprietaire) {
         this(id, isbn, proprietaire, State.DISPONIBLE);
     }
@@ -25,6 +30,6 @@ public record Bd (UUID id, Isbn isbn, Proprietaire proprietaire, State disponibl
         this.id = id;
         this.isbn = isbn;
         this.proprietaire = proprietaire;
-        this.disponible = disponible;
+        this.state = disponible;
     }
 }
