@@ -2,6 +2,7 @@ package io.permasoft.archihexa.pretdebd.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.UUID;
@@ -17,7 +18,7 @@ public class Bd  {
 
     public enum State { DISPONIBLE, EMPRUNTE;}
 
-    public Bd(UUID id, Isbn isbn, Proprietaire proprietaire) {
+    public Bd(@NonNull UUID id, @NonNull Isbn isbn, @NonNull Proprietaire proprietaire) {
         this(id, isbn, proprietaire, State.DISPONIBLE);
     }
 
@@ -26,7 +27,7 @@ public class Bd  {
      * When loading from a DB.
      */
     //@org.springframework.data.annotation.PersistenceCreator <= makes spring data use this constructor
-    public Bd(UUID id, Isbn isbn, Proprietaire proprietaire, State disponible) {
+    public Bd(@NonNull UUID id, @NonNull Isbn isbn, @NonNull Proprietaire proprietaire, @NonNull State disponible) {
         this.id = id;
         this.isbn = isbn;
         this.proprietaire = proprietaire;
