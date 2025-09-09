@@ -1,6 +1,5 @@
 package io.permasoft.archihexa.pretdebd.domain;
 
-import io.netty.util.internal.StringUtil;
 import lombok.NonNull;
 
 public record Isbn(@NonNull String isbn) {

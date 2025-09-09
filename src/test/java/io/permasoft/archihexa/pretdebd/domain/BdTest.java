@@ -4,6 +4,7 @@ import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,8 +26,8 @@ class BdTest {
         UUID id = UUID.randomUUID();
 
         Bd bd = new Bd(id, isbn, proprietaire);
-        Bd expected = new Bd(id, isbn, proprietaire, Bd.State.DISPONIBLE);
-        Bd failed = new Bd(id, isbn, proprietaire, Bd.State.EMPRUNTE);
+        Bd expected = new Bd(id, isbn, proprietaire, Bd.State.DISPONIBLE, null);
+        Bd failed = new Bd(id, isbn, proprietaire, Bd.State.EMPRUNTE, "anonymous");
         Assertions.assertAll(
                 () -> assertThat(bd).as("correct field by field test").usingRecursiveComparison().isEqualTo(expected),
                 () -> assertThat(bd).as("validate preceding test check all fields").usingRecursiveComparison().isNotEqualTo(failed),
@@ -34,4 +35,27 @@ class BdTest {
         );
 
     }
+
+    @Test
+    void emprunte_un_bd() {
+        Proprietaire proprietaire = new Proprietaire("Quentin");
+        Isbn isbn = new Isbn("978-2012101333");
+        UUID id = UUID.randomUUID();
+        Bd bd = new Bd(id, isbn, proprietaire);
+        assertThat(bd.empruntePar("Antoine")).isTrue();
+        assertThat(bd.getState()).isEqualTo(Bd.State.EMPRUNTE);
+        // retrieve emprunteur to check it has the borrowed book in his list
+    }
+
+    @Test
+    void emprunte_un_bd_deja_emprunte_est_refusé() {
+        Proprietaire proprietaire = new Proprietaire("Quentin");
+        Isbn isbn = new Isbn("978-2012101333");
+        UUID id = UUID.randomUUID();
+        Bd bd = new Bd(id, isbn, proprietaire);
+        assertThat(bd.empruntePar("Antoine")).isTrue();
+        assertThat(bd.empruntePar("Pierre")).isFalse();
+        // retrieve emprunteur to check it has the borrowed book in his list
+    }
+
 }
