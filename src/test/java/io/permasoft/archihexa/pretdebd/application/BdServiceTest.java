@@ -1,6 +1,7 @@
 package io.permasoft.archihexa.pretdebd.application;
 
 import io.permasoft.archihexa.pretdebd.domain.*;
+import io.permasoft.archihexa.pretdebd.infrastructure.sql.MyMemeoryRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -10,39 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class BdServiceTest {
     // each test is run after creating a new instance of the test class, so instance variables are new for each tests.
-    Repository repo = new Repository() {
-        Map<UUID, Bd> bds = new HashMap<>();
-        Map<String, Emprunteur> emprunteurs = new HashMap<>();
-        Classe classe = new Classe(
-                new Enfant("Thomas"),
-                new Enfant("Quentin"),
-                new Enfant("Antoine"));
-
-        @Override
-        public void save(Bd bd) {
-            bds.put(bd.getId(), bd);
-        }
-
-        @Override
-        public Optional<Bd> load(UUID id) {
-            return bds.get(id) == null ? Optional.empty() : Optional.of(bds.get(id));
-        }
-
-        @Override
-        public Emprunteur loadEmprunteur(String emprunteurId) {
-            return emprunteurs.get(emprunteurId);
-        }
-
-        @Override
-        public void save(Emprunteur emprunteur) {
-            emprunteurs.put(emprunteur.getName(), emprunteur);
-        }
-
-        @Override
-        public boolean estDansLaClasse(String name) {
-            return classe.aPourEleve(name);
-        }
-    };
+    Repository repo = new MyMemeoryRepository();
 
     @Test
     void enregitre_une_bd_et_la_consulte() {
@@ -159,4 +128,5 @@ public class BdServiceTest {
         var emprunteurAttendu = repo.loadEmprunteur("Antoine");
         assertThat(emprunteurAttendu.getBdsEmpruntees()).doesNotContain(bdEmpruntee.getId());
     }
+
 }

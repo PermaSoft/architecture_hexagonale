@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 public class PretDeBdAppTest {
     @Test
     void shouldPass() {
-        new PretDeBdApp();
+        new PretDeBdApp(false);
         assertThat(true).isTrue();
     }
 
@@ -21,6 +21,6 @@ public class PretDeBdAppTest {
 
     @Test
     void shouldRun() {
-        assertThatCode(() -> new PretDeBdApp().run("Hello", "World")).doesNotThrowAnyException();
+        assertThatCode(() -> new PretDeBdApp(false).run("Hello", "World")).doesNotThrowAnyException();
     }
 }

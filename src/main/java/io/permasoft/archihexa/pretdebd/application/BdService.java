@@ -1,10 +1,12 @@
 package io.permasoft.archihexa.pretdebd.application;
 
 import io.permasoft.archihexa.pretdebd.domain.*;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@ApplicationScoped
 public class BdService {
     private final Repository repo;
 
@@ -21,7 +23,7 @@ public class BdService {
     }
 
     public void emprunte(UUID id, String emprunteurId) throws BookNotFoundExeption {
-        Bd bd = repo.load(id).orElseThrow(() -> new BookNotFoundExeption("id"));
+        Bd bd = repo.load(id).orElseThrow(() -> new BookNotFoundExeption("id:"+id));
         Emprunteur emprunteur = repo.loadEmprunteur(emprunteurId);
         if (!repo.estDansLaClasse(emprunteurId)) {
             throw new RuntimeException("emprunteur n'est pas dans la classe");
