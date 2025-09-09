@@ -20,19 +20,32 @@ public class BdService {
         return repo.load(id);
     }
 
-    public boolean emprunte(UUID id, String emprunteurId) throws BookNotFoundExeption {
-        // tx begin
+    public void emprunte(UUID id, String emprunteurId) throws BookNotFoundExeption {
         Bd bd = repo.load(id).orElseThrow(() -> new BookNotFoundExeption("id"));
         Emprunteur emprunteur = repo.loadEmprunteur(emprunteurId);
-        if (bd.empruntePar(emprunteurId)) {
-            if (emprunteur.emprunte(bd.getId())) {
-                repo.save(emprunteur);
-                repo.save(bd);
-                // tx commit
-                return true;
-            }
+        if (!repo.estDansLaClasse(emprunteurId)) {
+            throw new RuntimeException("emprunteur n'est pas dans la classe");
         }
-        // tx rollback
-        return false;
+        if (!bd.empruntePar(emprunteurId)) {
+            throw new RuntimeException("bd n'est pas empruntable");
+        }
+        if (!emprunteur.emprunte(bd.getId())) {
+            throw new RuntimeException("emprunteur ne peut pas emprunter");
+        }
+        repo.save(emprunteur);
+        repo.save(bd);
+    }
+
+    public void retourne(UUID bdId) throws BookNotFoundExeption {
+        Bd bd = repo.load(bdId).orElseThrow(() -> new BookNotFoundExeption("id"));
+        Emprunteur emprunteur = repo.loadEmprunteur(bd.getEmprunteur());
+        if (!bd.retourne()) {
+            throw new RuntimeException("bd n'est pas retournable");
+        }
+        if (!emprunteur.retourne(bdId)) {
+            throw new RuntimeException("emprunteur ne peut pas retourner");
+        }
+        repo.save(bd);
+        repo.save(emprunteur);
     }
 }

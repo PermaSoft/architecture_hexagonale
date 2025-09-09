@@ -21,7 +21,7 @@ class ProprietaireTest {
     @Test
     void valideProprietaire() {
         assertThat(new Proprietaire("Quentin"))
-                .extracting(Proprietaire::name)
+                .extracting(Enfant::getName)
                 .isEqualTo("Quentin");
     }
 

@@ -1,15 +1,13 @@
 package io.permasoft.archihexa.pretdebd.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.UUID;
 
 @EqualsAndHashCode(of = "id")
 @ToString
 @Getter
+@Builder
 public class Bd {
     private final UUID id;
     private final Isbn isbn;
@@ -44,4 +42,14 @@ public class Bd {
         }
         return false;
     }
+
+    public boolean retourne() {
+        if (State.EMPRUNTE.equals(state)) {
+            state = State.DISPONIBLE;
+            emprunteur = null;
+            return true;
+        }
+        return false;
+    }
+
 }

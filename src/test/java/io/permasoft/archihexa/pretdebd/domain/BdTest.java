@@ -1,5 +1,6 @@
 package io.permasoft.archihexa.pretdebd.domain;
 
+import io.permasoft.archihexa.pretdebd.application.BdMother;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -56,6 +57,24 @@ class BdTest {
         assertThat(bd.empruntePar("Antoine")).isTrue();
         assertThat(bd.empruntePar("Pierre")).isFalse();
         // retrieve emprunteur to check it has the borrowed book in his list
+    }
+
+    @Test
+    void retourne_un_bd_empruntee() {
+        Bd bd = BdMother.aBook()
+                .state(Bd.State.EMPRUNTE)
+                .emprunteur("Antoine")
+                .build();
+        assertThat(bd.retourne()).isTrue();
+        assertThat(bd.getState()).isEqualTo(Bd.State.DISPONIBLE);
+        assertThat(bd.getEmprunteur()).isNull();
+    }
+
+    @Test
+    void retourne_un_bd_deja_rendue() {
+        Bd bd = BdMother.aBook().build();
+        assertThat(bd.retourne()).isFalse();
+        assertThat(bd.getState()).isEqualTo(Bd.State.DISPONIBLE);
     }
 
 }

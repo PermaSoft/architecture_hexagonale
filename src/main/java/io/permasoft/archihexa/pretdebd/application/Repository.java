@@ -13,4 +13,5 @@ public interface Repository {
     Emprunteur loadEmprunteur(String emprunteurId);
     void save(Emprunteur emprunteur);
 
+    boolean estDansLaClasse(String name);
 }

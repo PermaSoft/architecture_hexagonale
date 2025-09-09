@@ -41,4 +41,20 @@ public class EmprunteurTest {
         assertThat(emprunteur.getBdsEmpruntees())
                 .containsExactlyInAnyOrder(livreId1, livreId2, livreId3);
     }
+
+    @Test
+    void retourner_un_livre_emprunte() {
+        UUID livreId = UUID.randomUUID();
+        Emprunteur emprunteur = new Emprunteur("Quentin", List.of(livreId, UUID.randomUUID()));
+        assertThat(emprunteur.retourne(livreId)).isTrue();
+        assertThat(emprunteur.getBdsEmpruntees()).doesNotContain(livreId);
+    }
+
+    @Test
+    void retourner_un_livre_non_emprunte() {
+        UUID livreId = UUID.randomUUID();
+        Emprunteur emprunteur = new Emprunteur("Quentin", List.of(livreId));
+        assertThat(emprunteur.retourne(UUID.randomUUID())).isFalse();
+        assertThat(emprunteur.getBdsEmpruntees()).containsExactly(livreId);
+    }
 }

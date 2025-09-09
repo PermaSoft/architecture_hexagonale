@@ -1,11 +1,17 @@
 package io.permasoft.archihexa.pretdebd.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
-public record Proprietaire(@NonNull String name) {
-    public Proprietaire {
-        if (name.isBlank()) {
-            throw new IllegalArgumentException("Nom invalide : " + name);
-        }
+import java.util.Objects;
+
+@EqualsAndHashCode(of = "name")
+@ToString
+@Getter
+public final class Proprietaire extends Enfant {
+    public Proprietaire(@NonNull String name) {
+        super(name);
     }
 }

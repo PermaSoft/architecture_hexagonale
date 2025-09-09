@@ -10,16 +10,12 @@ import java.util.*;
 @ToString
 @EqualsAndHashCode(of = "name")
 @Getter
-public final class Emprunteur {
+public final class Emprunteur extends Enfant {
     public static final int MAX_BORROWED_BOOKS = 3;
-    private final @NonNull String name;
     private final Set<UUID> bdsEmpruntees = new TreeSet<>();
 
     public Emprunteur(@NonNull String name, List<UUID> bdsEmpruntees) {
-        if (name.isBlank()) {
-            throw new IllegalArgumentException("Nom invalide : " + name);
-        }
-        this.name = name;
+        super(name);
         if (bdsEmpruntees != null) {
             this.bdsEmpruntees.addAll(bdsEmpruntees);
             if (this.bdsEmpruntees.size() > 3) {
@@ -37,4 +33,10 @@ public final class Emprunteur {
         return false;
     }
 
+    public boolean retourne(UUID bdId) {
+        if (bdsEmpruntees.remove(bdId)) {
+            return true;
+        }
+        return false;
+    }
 }
